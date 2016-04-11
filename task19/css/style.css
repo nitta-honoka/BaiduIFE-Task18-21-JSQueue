@@ -1,0 +1,6 @@
+.box {
+    display: inline-block;
+    width: 10px;
+    border: 1px solid #000000;
+    background-color: #f41c29;
+}
