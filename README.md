@@ -23,8 +23,7 @@
 ##总结
 
 - 完成时间：2016.4.9
-- 学习了：事件代理,DOM操作
-- 实现了：4个按钮对 DOM 的操作事件
+- 实现了：通过事件代理及DOM操作完成 4 个按钮对 DOM 的操作
 - DEMO：[地址](http://nitta-honoka.github.io/BaiduIFE-Task18-21-JSQueue/task18/index.html)
 
 #task19
@@ -47,10 +46,9 @@
 
 ##总结
 
-- 完成时间：
-- 学习了：
-- 实现了：
-- DEMO：[地址]()
+- 完成时间：2016.4.11
+- 实现了：简单地数据校验,及可视化展示
+- DEMO：[地址](http://nitta-honoka.github.io/BaiduIFE-Task18-21-JSQueue/task19/index.html)
 
 #联系我
 
