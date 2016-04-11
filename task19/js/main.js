@@ -19,6 +19,22 @@
         },
         getTarget: function (event) {
             return event.target || event.srcElement;
+        },
+        bubbleSort: function (data) {
+            var temp;
+            var len = data.length;
+            for (var i = 0; i < len - 1; i ++) {
+                for (var j = len - 1; j >= 1; j --) {
+                    if (data[j] < data[j - 1]) {
+                        temp = data[j];
+                        data[j] = data[j - 1];
+                        data[j - 1] = temp;
+                        DomUtil.paintEle('container', j, data, 'swap');
+                    }
+                    DomUtil.paintEle('container', j, data, 'no');
+                }
+            }
+            return data;
         }
     };
     //DOM操作辅助对象
@@ -27,6 +43,7 @@
           var divElement = document.createElement('div');
           divElement.style.height = num + 'px';
           divElement.className = className;
+          divElement.numVal = num;
           return divElement;
       },
         insertEle: function (containId, element, type) {
@@ -47,21 +64,42 @@
             }
         },
         verifyNum: function (num) {
-            if (num < 10 || num > 100) {
-                alert("请输入10至100内的数值");
+            var numReg = /^\s*\d+\s*$/g;
+            if (!numReg.test(num)) {
+                alert("请输入数值");
+                input.focus();
                 return false;
             } else {
-                return true;
+                if (num < 10 || num > 100) {
+                    alert("请输入10至100内的数值");
+                    input.focus();
+                    return false;
+                } else {
+                    return true;
+                }
             }
         },
         randomNum: function () {
             return Math.floor(Math.random() * 91 + 10);
+        },
+        paintEle: function (containName, index, data, type) {
+            var containChild = document.getElementById(containName).childNodes;
+            if (type === 'swap') {
+                containChild[index].style.backgroundColor = '#37FF6F';
+                containChild[index - 1].style.backgroundColor = '#37FF6F';
+                containChild[index].style.height = data[index] + 'px';
+                containChild[index - 1].style.height = data[index - 1] + 'px';
+            }
+            if (type === 'no') {
+                containChild[index].style.backgroundColor = '#f41c29';
+                containChild[index - 1].style.backgroundColor = '#f41c29';
+            }
         }
     };
     //将点击事件代理在输入区域父元素上
     var body = document.getElementById('input-area');
     var val = document.getElementById('num');
-    var i = 0; //记录队列元素数量
+    var data = []; //记录队列元素
     EventUtil.addHandler(body, "click", function (event) {
         var num = val.value;
         event = EventUtil.getEvent(event);
@@ -69,47 +107,50 @@
         var numEle = DomUtil.create(num, 'box');
         switch (target.id) {
             case "in-left":
-                if (i > 60) {
+                if (data.length > 60) {
                     alert("元素数量不能超过60个");
                 } else {
                     if (DomUtil.verifyNum(num)) {
+                        data.push(num);
                         DomUtil.insertEle('container', numEle, 'left');
-                        i ++;
                     }
                 }
                 break;
             case "in-right":
-                if (i > 60) {
+                if (data.length > 60) {
                     alert("元素数量不能超过60个");
                 } else {
                     if (DomUtil.verifyNum(num)) {
+                        data.push(num);
                         DomUtil.insertEle('container', numEle, 'right');
-                        i ++;
                     }
                 }
                 break;
             case "rm-left":
                 DomUtil.removeEle('container', 'left');
-                i --;
+                data.shift();
                 break;
             case "rm-right":
                 DomUtil.removeEle('container', 'right');
-                i --;
+                data.pop();
                 break;
             case "random":
                 var j = 0;
-                if (i > 60) {
+                if (data.length > 60) {
                     alert("元素数量不能超过60个");
                 } else {
-                    while(j < 60 - i) {
+                    while(j < 60 - data.length) {
                         var ranNum = DomUtil.randomNum();
                         var ranEle = DomUtil.create(ranNum, 'box');
                         DomUtil.insertEle('container', ranEle, 'right');
-                        i ++;
+                        data.push(ranNum);
                     }
                 }
-                console.log(i);
+                console.dir(data);
                 break;
+            case "sort":
+                data = EventUtil.bubbleSort(data);
+                console.dir(data);
         }
     });
 })();
