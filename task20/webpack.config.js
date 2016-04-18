@@ -1,34 +1,15 @@
-var webpack = require('webpack');
-var path = require('path');
-var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-
 module.exports = {
-  devServer: {
-    historyApiFallback: true,
-    hot: true,
-    inline: true,
-    progress: true,
-    port: 8080
-  },
-  entry: [
-    'webpack/hot/dev-server',
-    path.resolve(__dirname, './js/main.js')
-  ],
+  entry: './js/main.js',
   output: {
-    path: __dirname + '/build',
-    publicPath: '/',
-    filename: './bundle.js'
+    filename: 'bundle.js'
   },
   module: {
     loaders:[
-      { test: /\.js$/, include: path.resolve(__dirname, './js/*'), exclude:/node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.js[x]?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader?presets[]=es2015&presets[]=react',
+      },
     ]
-  },
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new OpenBrowserPlugin({ url: 'http://localhost:8080' })
-  ]
+  }
 };

@@ -37,6 +37,14 @@
         containEle.appendChild(element);
       }
     },
+    searchRender(textCon, str) {
+      if (str !== null && str.length > 0) {
+        if (textCon.match(str)) {
+          textCon = textCon.replace(new RegExp(str, 'g'), `<span class="search-span">${str}</span>`);
+          return `<div>${textCon}</div>`;
+        }
+      }
+    },
     removeEle(containId, type) {
       const containEle = document.getElementById(containId);
       if (type === 'left') {
@@ -49,25 +57,28 @@
   // 将点击事件代理在输入区域父元素上
   const body = document.getElementById('input-area');
   const val = document.getElementById('text');
+  const search = document.getElementById('search');
   const inputReg = /\r|\s|[,，、]/g;
+  const containEle = document.getElementById('container');
   let textCon = [];
   EventUtil.addHandler(body, 'click', function (event = EventUtil.getEvent(event)) {
     const text = val.value.split(inputReg);
     const target = EventUtil.getTarget(event);
+    const searchVal = search.value;
     switch (target.id) {
       case 'in-left':
         for (let i = 0; i < text.length; i++) {
           const textEle = DomUtil.create(text[i], 'box');
           DomUtil.insertEle('container', textEle, 'left');
-          textCon.push(text[i]);
+          textCon.push(textEle);
         }
         val.value = '';
         break;
       case 'in-right':
-        for (let i = 0; i < text.length; i ++) {
+        for (let i = 0; i < text.length; i++) {
           const textEle = DomUtil.create(text[i], 'box');
           DomUtil.insertEle('container', textEle, 'right');
-          textCon.push(text[i]);
+          textCon.push(textEle);
         }
         val.value = '';
         break;
@@ -78,6 +89,17 @@
       case 'rm-right':
         DomUtil.removeEle('container', 'right');
         textCon.pop();
+        break;
+      case 'search-btn':
+        for (let i = 0; i < textCon.length; i ++) {
+          let textVal = textCon[i].firstChild.nodeValue;
+          console.log(textVal);
+          if (textVal.match(searchVal)) {
+            textVal = textVal.replace(new RegExp(searchVal, 'g'), `<span class="search-btn">${searchVal}</span>`);
+            let textValEle = DomUtil.create(`<div>${textVal}</div>`, 'box');
+            containEle.replaceChild(textValEle, textCon[i]);
+          }
+        }
         break;
     }
   });
