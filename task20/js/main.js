@@ -24,7 +24,7 @@
   const DomUtil = {
     create(num, className) {
       const divElement = document.createElement('div');
-      divElement.innerText = num.toString();
+      divElement.innerHTML = num;
       divElement.className = className;
       return divElement;
     },
@@ -96,7 +96,7 @@
           console.log(textVal);
           if (textVal.match(searchVal)) {
             textVal = textVal.replace(new RegExp(searchVal, 'g'), `<span class="search-btn">${searchVal}</span>`);
-            let textValEle = DomUtil.create(`<div>${textVal}</div>`, 'box');
+            const textValEle = DomUtil.create(textVal, 'box');
             containEle.replaceChild(textValEle, textCon[i]);
           }
         }
