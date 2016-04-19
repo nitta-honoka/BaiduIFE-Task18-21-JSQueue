@@ -14,6 +14,6 @@
 
 ##总结
 
-- 完成时间：
-- 实现了：
-- DEMO：[地址]()
+- 完成时间：2016.4.19
+- 实现了：批量输入,模糊查询的操作
+- DEMO：[地址](http://nitta-honoka.github.io/BaiduIFE-Task18-21-JSQueue/task20/index.html)
